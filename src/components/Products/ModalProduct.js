@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { capitalize, convertToPath } from '../../utils/formatString';
+import { convertToPath } from '../../utils/formatString';
 import { modalProductValidator } from '../../utils/validation';
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
@@ -68,7 +68,7 @@ export default function Modal({
     const uuid = window.sessionStorage.getItem('uuid');
     const data = {
       ...itemSelected,
-      name: capitalize(title),
+      name: title,
       path: pathRef.current.value,
       content: content,
       thumbnail: thumbnailURL.trim(),

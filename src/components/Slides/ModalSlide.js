@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { capitalize } from '../../utils/formatString';
 import { modalSlideValidator } from '../../utils/validation';
 import { uploadSingle } from '../../services/file';
 
@@ -58,7 +57,7 @@ export default function Modal({
   const handleSubmit = async (e) => {
     const data = {
       ...itemSelected,
-      title: capitalize(titleRef.current.value),
+      title: titleRef.current.value,
       redirectTo: redirectToRef.current.value.trim().toLowerCase(),
       contentLink: contentLinkRef.current.value.trim(),
       backgroundImage: backgroundImage.trim(),
