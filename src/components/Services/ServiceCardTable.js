@@ -150,22 +150,6 @@ export default function CardTable({
                       : 'bg-sky-800 text-sky-300 border-sky-700')
                   }
                 ></th>
-                <th
-                  className={
-                    'px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
-                    (color === 'light'
-                      ? 'bg-slate-50 text-slate-400 border-slate-100'
-                      : 'bg-sky-800 text-sky-300 border-sky-700')
-                  }
-                ></th>
-                <th
-                  className={
-                    'px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
-                    (color === 'light'
-                      ? 'bg-slate-50 text-slate-400 border-slate-100'
-                      : 'bg-sky-800 text-sky-300 border-sky-700')
-                  }
-                ></th>
               </tr>
               <tr>
                 <th
@@ -216,27 +200,7 @@ export default function CardTable({
                       : 'bg-sky-800 text-sky-300 border-sky-700')
                   }
                 >
-                  User created
-                </th>
-                <th
-                  className={
-                    'px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
-                    (color === 'light'
-                      ? 'bg-slate-50 text-slate-400 border-slate-100'
-                      : 'bg-sky-800 text-sky-300 border-sky-700')
-                  }
-                >
-                  Date created
-                </th>
-                <th
-                  className={
-                    'px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
-                    (color === 'light'
-                      ? 'bg-slate-50 text-slate-400 border-slate-100'
-                      : 'bg-sky-800 text-sky-300 border-sky-700')
-                  }
-                >
-                  User updated
+                  Order
                 </th>
                 <th
                   className={
@@ -293,13 +257,7 @@ export default function CardTable({
                       </div>
                     </td>
                     <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4'>
-                      {item.createdId[0]?.username}
-                    </td>
-                    <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
-                      {formatDate(item.createdAt)}
-                    </td>
-                    <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4'>
-                      {item.updatedId[0]?.username}
+                      {item.order || 0}
                     </td>
                     <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
                       {formatDate(item.updatedAt)}

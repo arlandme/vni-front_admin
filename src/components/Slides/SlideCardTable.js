@@ -131,6 +131,14 @@ export default function CardTable({
                 </th>
                 <th
                   className={
+                    'px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
+                    (color === 'light'
+                      ? 'bg-slate-50 text-slate-400 border-slate-100'
+                      : 'bg-sky-800 text-sky-300 border-sky-700')
+                  }
+                ></th>
+                <th
+                  className={
                     'px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
                     (color === 'light'
                       ? 'bg-slate-50 text-slate-400 border-slate-100'
@@ -201,6 +209,16 @@ export default function CardTable({
                       : 'bg-sky-800 text-sky-300 border-sky-700')
                   }
                 >
+                  Order
+                </th>
+                <th
+                  className={
+                    'px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
+                    (color === 'light'
+                      ? 'bg-slate-50 text-slate-400 border-slate-100'
+                      : 'bg-sky-800 text-sky-300 border-sky-700')
+                  }
+                >
                   Redirect to
                 </th>
                 <th
@@ -244,6 +262,9 @@ export default function CardTable({
                     </td>
                     <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4'>
                       {item.contentLink}
+                    </td>
+                    <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4'>
+                      {item.order}
                     </td>
                     <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4'>
                       {item.redirectTo}

@@ -44,6 +44,7 @@ export function modalProductValidator(data) {
     ...data,
     thumbnail: joi.string().required(),
     content: joi.string().required(),
+    order: joi.number().required(),
     name: joi.string().max(100).required(),
     path: joi.string().max(100).required(),
   }).messages({
@@ -58,6 +59,7 @@ export function modalServiceValidator(data) {
     ...data,
     thumbnail: joi.string().required(),
     content: joi.string().required(),
+    order: joi.number().required(),
     title: joi.string().max(100).required(),
     path: joi.string().max(100).required(),
     summary: joi.string().required(),
@@ -72,6 +74,7 @@ export function modalSlideValidator(data) {
   const rule = joi.object({
     ...data,
     title: joi.string().required(),
+    order: joi.number().required(),
     backgroundImage: joi.string().required(),
     redirectTo: joi.string().max(100).required(),
     contentLink: joi.string().max(100).required(),

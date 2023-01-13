@@ -16,6 +16,7 @@ export default function Modal({
 }) {
   const titleRef = useRef();
   const pathRef = useRef();
+  const orderRef = useRef();
   const summaryRef = useRef();
 
   const [thumbnailURL, setThumbnailURL] = useState('');
@@ -32,6 +33,7 @@ export default function Modal({
       setTitle(itemSelected.title);
       pathRef.current.value = itemSelected.path ?? '';
       summaryRef.current.value = itemSelected.summary ?? '';
+      orderRef.current.value = itemSelected.order || 0;
       setContent(itemSelected.content);
       setThumbnailURL(itemSelected.thumbnail);
       setListImages(itemSelected.listNameImages);
@@ -44,6 +46,7 @@ export default function Modal({
       setTitle('');
       pathRef.current.value = '';
       summaryRef.current.value = '';
+      orderRef.current.value = 0;
       setContent('');
       // contentRef.current.value = '';
     }
@@ -78,6 +81,7 @@ export default function Modal({
       content: content,
       thumbnail: thumbnailURL.trim(),
       updatedId: uuid,
+      order: Number(orderRef.current.value),
     };
 
     if (!itemSelected) data.createId = uuid;
@@ -177,7 +181,7 @@ export default function Modal({
                 </div>
                 {/*body*/}
                 <div className='flex flex-wrap p-4 h-[500px] overflow-y-auto'>
-                  <div className='w-full lg:w-1/2 px-4'>
+                  <div className='w-full lg:w-1/3 px-4'>
                     <div className='relative w-full mb-3'>
                       <label
                         className='block uppercase text-slate-500 text-xs font-bold mb-2'
@@ -200,7 +204,7 @@ export default function Modal({
                       </small>
                     </div>
                   </div>
-                  <div className='w-full lg:w-1/2 px-4'>
+                  <div className='w-full lg:w-1/3 px-4'>
                     <div className='relative w-full mb-3'>
                       <label
                         className='block uppercase text-slate-500 text-xs font-bold mb-2'
@@ -219,6 +223,28 @@ export default function Modal({
                       <small className='text-red-500 font-medium'>
                         {messages.map((message) =>
                           message.key === 'path' ? message.message : null
+                        )}
+                      </small>
+                    </div>
+                  </div>
+                  <div className='w-full lg:w-1/3 px-4'>
+                    <div className='relative w-full mb-3'>
+                      <label
+                        className='block uppercase text-slate-500 text-xs font-bold mb-2'
+                        htmlFor='grid-password'
+                      >
+                        Order (Descending)
+                      </label>
+                      <input
+                        ref={orderRef}
+                        type='number'
+                        placeholder='Order Number (Descending)'
+                        className='border-0 px-3 py-3 placeholder-slate-200 text-slate-500 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150'
+                        defaultValue={itemSelected?.order}
+                      />
+                      <small className='text-red-500 font-medium'>
+                        {messages.map((message) =>
+                          message.key === 'order' ? message.message : null
                         )}
                       </small>
                     </div>

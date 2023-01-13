@@ -12,6 +12,7 @@ export default function Modal({
   toggleToast,
 }) {
   const titleRef = useRef();
+  const orderRef = useRef();
   const redirectToRef = useRef();
   const contentLinkRef = useRef();
 
@@ -21,6 +22,7 @@ export default function Modal({
   useEffect(() => {
     if (itemSelected && titleRef) {
       titleRef.current.value = itemSelected.title;
+      orderRef.current.value = itemSelected.order || 0;
       redirectToRef.current.value = itemSelected.redirectTo;
       contentLinkRef.current.value = itemSelected.contentLink;
       setBackgroundImage(itemSelected.backgroundImage);
@@ -32,6 +34,7 @@ export default function Modal({
       titleRef.current.value = '';
       redirectToRef.current.value = '';
       contentLinkRef.current.value = '';
+      orderRef.current.value = 0;
     }
   };
 
@@ -58,11 +61,12 @@ export default function Modal({
     const data = {
       ...itemSelected,
       title: titleRef.current.value,
+      order: Number(orderRef.current.value),
       redirectTo: redirectToRef.current.value.trim().toLowerCase(),
       contentLink: contentLinkRef.current.value.trim(),
       backgroundImage: backgroundImage.trim(),
     };
-
+    
     if (selectedFileThumbnail) await handleUploadImage(selectedFileThumbnail).then(res => data.backgroundImage = res);
     
     const validator = modalSlideValidator(data);
@@ -106,7 +110,7 @@ export default function Modal({
                 </div>
                 {/*body*/}
                 <div className='flex flex-wrap p-4 h-[500px] overflow-y-auto'>
-                  <div className='w-full lg:w-full px-4'>
+                  <div className='w-full lg:w-1/2 px-4'>
                     <div className='relative w-full mb-3'>
                       <label
                         className='block uppercase text-slate-500 text-xs font-bold mb-2'
@@ -124,6 +128,28 @@ export default function Modal({
                       <small className='text-red-500 font-medium'>
                         {messages.map((message) =>
                           message.key === 'title' ? message.message : null
+                        )}
+                      </small>
+                    </div>
+                  </div>
+                  <div className='w-full lg:w-1/2 px-4'>
+                    <div className='relative w-full mb-3'>
+                      <label
+                        className='block uppercase text-slate-500 text-xs font-bold mb-2'
+                        htmlFor='grid-password'
+                      >
+                        Order (Descending)
+                      </label>
+                      <input
+                        ref={orderRef}
+                        type='number'
+                        placeholder='Order Number (Descending)'
+                        className='border-0 px-3 py-3 placeholder-slate-200 text-slate-500 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150'
+                        defaultValue={itemSelected?.order}
+                      />
+                      <small className='text-red-500 font-medium'>
+                        {messages.map((message) =>
+                          message.key === 'order' ? message.message : null
                         )}
                       </small>
                     </div>
