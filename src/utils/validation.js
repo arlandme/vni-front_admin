@@ -54,6 +54,20 @@ export function modalProductValidator(data) {
   return rule.validate(data, { abortEarly: false });
 }
 
+export function modalCustomerValidator(data) {
+  const rule = joi.object({
+    ...data,
+    thumbnail: joi.string().required(),
+    order: joi.number().required(),
+    name: joi.string().max(100).required(),
+    path: joi.string().max(100).required(),
+  }).messages({
+    'string.empty': `Your {#label} is required`,
+  });
+
+  return rule.validate(data, { abortEarly: false });
+}
+
 export function modalServiceValidator(data) {
   const rule = joi.object({
     ...data,
