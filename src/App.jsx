@@ -3,27 +3,27 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 // layouts
 
-import Admin from './layouts/Admin.js';
-import Auth from './layouts/Auth.js';
+import Admin from './layouts/Admin.jsx';
+import Auth from './layouts/Auth.jsx';
 
 // views without layouts
 
-import Landing from './views/Landing.js';
-import Profile from './views/Profile.js';
+import Landing from './views/Landing.jsx';
+import Profile from './views/Profile.jsx';
 
 // Views
-import Dashboard from './views/admin/Dashboard';
 import Maps from './views/admin/Maps';
 import Settings from './views/admin/Settings';
 import Tables from './views/admin/Tables';
 import Users from './views/admin/Users';
-import Products from './views/admin/Products.js';
+import Products from './views/admin/Products.jsx';
 
 // Landing pages
 import Login from './views/auth/Login';
 import Register from './views/auth/Register';
-import Slides from './views/admin/Slides.js';
-import Services from './views/admin/Service.js';
+import Slides from './views/admin/Slides.jsx';
+import Services from './views/admin/Service.jsx';
+import Customer from './views/admin/Customer.jsx';
 
 export default function App() {
   const [title, setTitle] = useState('VN-Inspection - Admin');
@@ -43,6 +43,7 @@ export default function App() {
             <Route path='/admin/settings' element={<Settings setTitle={setTitle} />} />
             <Route path='/admin/tables' element={<Tables setTitle={setTitle} />} />
             <Route index path='/admin/products' element={<Products setTitle={setTitle} />} />
+            <Route path='/admin/customers' element={<Customer setTitle={setTitle} />} />
             <Route path='/admin/users' element={<Users setTitle={setTitle} />} />
             <Route path='/admin/slides' element={<Slides setTitle={setTitle} />} />
             <Route path='/admin/services' element={<Services setTitle={setTitle} />} />

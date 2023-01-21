@@ -9,7 +9,7 @@ export default function Products({ setTitle }) {
     name: '',
   });
   const [data, setData] = useState();
-  const [error, setError] = useState();
+
 
   // Get data
   useEffect(() => {
@@ -25,14 +25,11 @@ export default function Products({ setTitle }) {
     {
       switch (action) {
         case 0:
-          create(option).then(res => searchData(optionSearch)).catch(err => setError(err));
-          break;
+          return create(option).then(res => searchData(optionSearch));
         case 1:
-          update(option).then(res => searchData(optionSearch));
-          break;
+          return update(option).then(res => searchData(optionSearch));
         case 2:
-          remove(option).then(res => searchData(optionSearch));
-          break;
+          return remove(option).then(res => searchData(optionSearch));
         default:
           break;
       }
@@ -41,7 +38,7 @@ export default function Products({ setTitle }) {
 
   return (
     <div className='min-h-screen p-4'>
-      <MainProduct data={data} error={error} optionSearch={optionSearch} searchData={searchData} handlePost={handlePost} setOptionSearch={setOptionSearch} />
+      <MainProduct data={data} optionSearch={optionSearch} searchData={searchData} handlePost={handlePost} setOptionSearch={setOptionSearch} />
     </div>
   );
 }

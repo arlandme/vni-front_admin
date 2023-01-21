@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import Breadcrumb from '../Shared/Breadcrumbs/Breadcrumb';
 import Toasts from '../Shared/Toasts/Toasts';
-import Modal from './ModalService';
-import CardTable from './ServiceCardTable';
+import Modal from './ModalSlide';
+import CardTable from './SlideCardTable';
 
 const breadcrumbs = [
   {
-    title: 'Services management',
+    title: 'Slides management',
   },
 ];
 
-export default function MainService({ data, error, optionSearch, searchData, handlePost }) {
+export default function MainSlide({ data, optionSearch, searchData, handlePost }) {
   const [showModal, setShowModal] = useState(false);
   const [itemSelected, setItemSelected] = useState();
   const [titleModal, setTitleModal] = useState();

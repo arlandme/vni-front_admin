@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 // components
 
-import CardTable from "../../components/Cards/CardTable.js";
+import CardTable from "../../components/Cards/CardTable.jsx";
 
 export default function Tables({ setTitle }) {
   useEffect(() => { setTitle('VNI - Tables'); }, [setTitle]);

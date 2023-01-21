@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import NotificationDropdown from '../../Dropdowns/NotificationDropdown.js';
+import NotificationDropdown from '../../Dropdowns/NotificationDropdown.jsx';
 import UserDropdown from '../../Dropdowns/UserDropdown';
 
 const listSidebar = {
@@ -23,9 +23,14 @@ const listSidebar = {
       icon: 'fa-regular fa-box',
     },
     {
+      title: 'Customers',
+      link: '/admin/customers',
+      icon: 'fa-regular fa-users',
+    },
+    {
       title: 'Users',
       link: '/admin/users',
-      icon: 'fa-regular fa-users',
+      icon: 'fa-regular fa-users-gear',
     },
   ],
   auth: [
@@ -145,7 +150,7 @@ export default function Sidebar() {
                   >
                     <i
                       className={
-                        `${item.icon} text-lg block ` +
+                        `${item.icon} text-lg block w-5 ` +
                         (url === item.link ? 'opacity-75' : 'text-slate-400')
                       }
                     ></i>
@@ -222,6 +227,31 @@ export default function Sidebar() {
 
             {/* Divider */}
             <hr className='my-4 md:min-w-full' />
+
+            <ul className='md:flex-col md:min-w-full flex flex-col list-none md:mb-4'>
+              <li className='items-center'>
+                <a
+                  className={
+                    'text-xs uppercase py-3 font-bold underline flex items-center gap-4 text-sky-500 hover:text-sky-600'
+                  }
+                  href={'https://vercel.com/dashboard'}
+                  target="_blank"
+                >
+                  <span>Host</span>
+                </a>
+              </li>
+              <li className='items-center'>
+                <a
+                  className={
+                    'text-xs uppercase py-3 font-bold underline flex items-center gap-4 text-sky-500 hover:text-sky-600'
+                  }
+                  href={'https://cloudinary.com/console'}
+                  target="_blank"
+                >
+                  <span>Thư viện ảnh</span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </nav>

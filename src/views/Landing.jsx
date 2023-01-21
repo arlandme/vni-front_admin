@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 // components
 
-import Navbar from "../components/Shared/Navbars/AuthNavbar.js";
-import Footer from "../components/Shared/Footers/Footer.js";
+import Navbar from "../components/Shared/Navbars/AuthNavbar.jsx";
+import Footer from "../components/Shared/Footers/Footer.jsx";
 
 export default function Landing({ setTitle }) {
   useEffect(() => { setTitle('VNI - Landing Pages'); }, [setTitle]);

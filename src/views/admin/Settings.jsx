@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // components
 
-import CardSettings from '../../components/Cards/CardSettings.js';
+import CardSettings from '../../components/Cards/CardSettings.jsx';
 import { getById, update } from '../../services/auth.js';
 export default function Settings({ setTitle }) {
   const token = window.sessionStorage.getItem('USER_TOKEN');

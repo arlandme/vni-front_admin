@@ -10,7 +10,7 @@ const breadcrumbs = [
   },
 ];
 
-export default function MainProduct({ data, error, optionSearch, searchData, handlePost }) {
+export default function MainProduct({ data, optionSearch, searchData, handlePost }) {
   const [showModal, setShowModal] = useState(false);
   const [itemSelected, setItemSelected] = useState();
   const [titleModal, setTitleModal] = useState();

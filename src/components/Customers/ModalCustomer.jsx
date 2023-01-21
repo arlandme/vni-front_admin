@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { convertToPath } from '../../utils/formatString';
-import { modalServiceValidator } from '../../utils/validation';
+import { modalCustomerValidator } from '../../utils/validation';
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 import { remove, uploadSingle } from '../../services/file';
+import Loading from '../Shared/Loading/Loading';
 
 let selectedFile, selectedFileThumbnail;
 export default function Modal({
@@ -14,41 +15,41 @@ export default function Modal({
   handlePost,
   toggleToast,
 }) {
-  const titleRef = useRef();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const nameCustomerRef = useRef();
   const pathRef = useRef();
+  const linkRef = useRef();
   const orderRef = useRef();
-  const summaryRef = useRef();
 
   const [thumbnailURL, setThumbnailURL] = useState('');
   const [messages, setMessages] = useState([]);
   const [listImages, setListImages] = useState([]);
   const [indexImage, setIndexImage] = useState();
   const [isDeleteImage, setIsDeleteImage] = useState(false);
-  const [content, setContent] = useState();
+  const [description, setDescription] = useState();
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    if (itemSelected && titleRef) {
-      // titleRef.current.value = itemSelected.title;
-      setTitle(itemSelected.title);
-      pathRef.current.value = itemSelected.path ?? '';
-      summaryRef.current.value = itemSelected.summary ?? '';
+    if (itemSelected && nameCustomerRef) {
+      // nameCustomerRef.current.value = itemSelected.name;
+      setTitle(itemSelected.name);
+      pathRef.current.value = itemSelected.path;
+      linkRef.current.value = itemSelected.link || '';
       orderRef.current.value = itemSelected.order || 0;
-      setContent(itemSelected.content);
+      setDescription(itemSelected.description);
       setThumbnailURL(itemSelected.thumbnail);
       setListImages(itemSelected.listNameImages);
     } else emptyValues();
   }, [itemSelected]);
 
   const emptyValues = () => {
-    if (titleRef) {
-      // titleRef.current.value = '';
+    if (nameCustomerRef) {
+      // nameCustomerRef.current.value = '';
+      setDescription('');
       setTitle('');
-      pathRef.current.value = '';
-      summaryRef.current.value = '';
       orderRef.current.value = 0;
-      setContent('');
-      // contentRef.current.value = '';
+      // descriptionRef.current.value = '';
     }
   };
 
@@ -72,26 +73,23 @@ export default function Modal({
   };
 
   const handleSubmit = async (e) => {
-    const uuid = window.sessionStorage.getItem('uuid');
+    setIsLoading(true);
     const data = {
       ...itemSelected,
-      title: title,
-      path: pathRef.current.value.trim(),
-      summary: summaryRef.current.value.trim(),
-      content: content,
+      name: title,
+      path: pathRef.current.value,
+      link: linkRef.current.value,
+      description: description,
       thumbnail: thumbnailURL.trim(),
-      updatedId: uuid,
       order: Number(orderRef.current.value),
     };
 
-    if (!itemSelected) data.createId = uuid;
-    else data.createdId = itemSelected.createdId[0]._id;
     if (selectedFileThumbnail)
       await handleUploadImage(selectedFileThumbnail).then(
-        (res) => (data.thumbnail = res)
-      );
+          (res) => (data.thumbnail = res)
+        ).catch(err => setIsLoading(false));
 
-    const validator = modalServiceValidator(data);
+    const validator = modalCustomerValidator(data);
 
     const arr = [];
     setMessages(arr);
@@ -101,11 +99,17 @@ export default function Modal({
       );
 
       setMessages(arr);
+      setIsLoading(false);
     } else {
-      setShowModal(false);
-      handlePost(data, itemSelected ? 1 : 0);
-      toggleToast(true);
-      selectedFileThumbnail = null;
+      handlePost(data, itemSelected ? 1 : 0).then(res => {
+        setShowModal(false);
+        toggleToast(true);
+        setIsLoading(false);
+        selectedFileThumbnail = null;
+      }).catch(err => {
+        toggleToast(false);
+        setIsLoading(false);
+      });
     }
   };
 
@@ -165,7 +169,7 @@ export default function Modal({
         <>
           <div className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 outline-none focus:outline-none w-5/6 h-full'>
             <div className='relative w-auto my-6 mx-auto max-w-10/12 overflow-y-auto'>
-              {/*content*/}
+              {/*description*/}
               <div className='border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none overflow-y-auto'>
                 {/*header*/}
                 <div className='flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t'>
@@ -187,19 +191,19 @@ export default function Modal({
                         className='block uppercase text-slate-500 text-xs font-bold mb-2'
                         htmlFor='grid-password'
                       >
-                        Title
+                        Name customer
                       </label>
                       <input
-                        ref={titleRef}
+                        ref={nameCustomerRef}
                         type='text'
-                        placeholder='Title'
+                        placeholder='Name customer'
                         className='border-0 px-3 py-3 placeholder-slate-200 text-slate-500 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150'
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                       />
                       <small className='text-red-500 font-medium'>
                         {messages.map((message) =>
-                          message.key === 'title' ? message.message : null
+                          message.key === 'name' ? message.message : null
                         )}
                       </small>
                     </div>
@@ -215,7 +219,7 @@ export default function Modal({
                       <input
                         ref={pathRef}
                         type='text'
-                        placeholder='Example: name-service'
+                        placeholder='Name customer'
                         className='border-0 px-3 py-3 placeholder-slate-200 text-slate-500 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150'
                         value={convertToPath(title)}
                         disabled
@@ -249,27 +253,29 @@ export default function Modal({
                       </small>
                     </div>
                   </div>
-                  <div className='w-full lg:w-full px-4'>
+                  <div className='w-full lg:w-1/3 px-4'>
                     <div className='relative w-full mb-3'>
                       <label
                         className='block uppercase text-slate-500 text-xs font-bold mb-2'
                         htmlFor='grid-password'
                       >
-                        Summary
+                        Link (Link to customer)
                       </label>
-                      <textarea
-                        ref={summaryRef}
-                        placeholder='Summary'
+                      <input
+                        ref={linkRef}
+                        type='text'
+                        placeholder='Link (Link to customer)'
                         className='border-0 px-3 py-3 placeholder-slate-200 text-slate-500 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150'
-                      ></textarea>
+                        defaultValue={itemSelected?.link}
+                      />
                       <small className='text-red-500 font-medium'>
                         {messages.map((message) =>
-                          message.key === 'summary' ? message.message : null
+                          message.key === 'link' ? message.message : null
                         )}
                       </small>
                     </div>
                   </div>
-                  <div className='w-full lg:w-6/12 px-4'>
+                  <div className='w-full lg:w-1/3 px-4'>
                     <div className='relative w-full mb-3'>
                       <label
                         className='block uppercase text-slate-500 text-xs font-bold mb-2'
@@ -306,7 +312,7 @@ export default function Modal({
                       </small>
                     </div>
                   </div>
-                  <div className='w-full lg:w-6/12 px-4'>
+                  <div className='w-full lg:w-1/3 px-4'>
                     <div className='w-full px-4 flex'>
                       <div className='relative'>
                         <img
@@ -324,16 +330,24 @@ export default function Modal({
                         className='block uppercase text-slate-500 text-xs font-bold mb-2'
                         htmlFor='grid-password'
                       >
-                        Content
+                        description
                       </label>
-                      {(content !== undefined || content) && (
+                      {/* <textarea
+                        ref={descriptionRef}
+                        type='text'
+                        className='border-0 px-3 py-3 placeholder-slate-200 text-slate-500 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150'
+                        defaultValue={itemSelected?.description}
+                        placeholder='description of page'
+                        rows={10}
+                      ></textarea> */}
+                      {(description !== undefined || description) && (
                         <SunEditor
                           autoFocus={false}
                           onImageUploadBefore={onImageUploadBefore}
                           onImageUpload={onImageUpload}
-                          onChange={(content) => setContent(content)}
-                          defaultValue={content}
-                          setDefaultStyle={'height: 250px; font-size: 16px'}
+                          onChange={(description) => setDescription(description)}
+                          defaultValue={description}
+                          setDefaultStyle={'height: 150px; font-size: 16px'}
                           setOptions={{
                             buttonList: [
                               [
@@ -360,7 +374,7 @@ export default function Modal({
                       )}
                       <small className='text-red-500 font-medium'>
                         {messages.map((message) =>
-                          message.key === 'content' ? message.message : null
+                          message.key === 'description' ? message.message : null
                         )}
                       </small>
                     </div>
@@ -387,6 +401,7 @@ export default function Modal({
             </div>
           </div>
           <div className='opacity-25 fixed inset-0 z-40 bg-black'></div>
+          <Loading isLoading={isLoading} />
         </>
       ) : null}
     </>
