@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { modalSlideValidator } from '../../utils/validation';
 import { uploadSingle } from '../../services/file';
 import Loading from '../Shared/Loading/Loading';
+import SunEditor from 'suneditor-react';
 
 let selectedFileThumbnail;
 export default function Modal({
@@ -19,6 +20,7 @@ export default function Modal({
   const orderRef = useRef();
   const redirectToRef = useRef();
   const contentLinkRef = useRef();
+  const [description, setDescription] = useState();
 
   const [backgroundImage, setBackgroundImage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -30,6 +32,7 @@ export default function Modal({
       redirectToRef.current.value = itemSelected.redirectTo;
       contentLinkRef.current.value = itemSelected.contentLink;
       setBackgroundImage(itemSelected.backgroundImage);
+      setDescription(itemSelected.description || '');
     } else emptyValues();
   }, [itemSelected]);
 
@@ -39,6 +42,7 @@ export default function Modal({
       redirectToRef.current.value = '';
       contentLinkRef.current.value = '';
       orderRef.current.value = 0;
+      setDescription('');
     }
   };
 
@@ -70,6 +74,7 @@ export default function Modal({
       redirectTo: redirectToRef.current.value.trim().toLowerCase(),
       contentLink: contentLinkRef.current.value.trim(),
       backgroundImage: backgroundImage.trim(),
+      description,
     };
     
     if (selectedFileThumbnail) await handleUploadImage(selectedFileThumbnail).then(res => data.backgroundImage = res);
@@ -250,6 +255,52 @@ export default function Modal({
                       <small className='text-red-500 font-medium'>
                         {messages.map((message) =>
                           message.key === 'redirectTo' ? message.message : null
+                        )}
+                      </small>
+                    </div>
+                  </div>
+
+                  <div className='w-full lg:w-full px-4'>
+                    <div className='relative w-full mb-3'>
+                      <label
+                        className='block uppercase text-slate-500 text-xs font-bold mb-2'
+                        htmlFor='grid-password'
+                      >
+                        Description
+                      </label>
+                      {(description !== undefined || description) && (
+                        <SunEditor
+                          autoFocus={false}
+                          onChange={(description) => setDescription(description)}
+                          defaultValue={description}
+                          setDefaultStyle={'height: 100px; font-size: 16px'}
+                          setOptions={{
+                            buttonList: [
+                              [
+                                'bold',
+                                'underline',
+                                'italic',
+                                'strike',
+                                'list',
+                                'align',
+                                'font',
+                                'fontSize',
+                                'formatBlock',
+                                'fontColor',
+                                'hiliteColor',
+                                'textStyle',
+                                'table',
+                                'link',
+                                'fullScreen',
+                                'codeView',
+                              ],
+                            ],
+                          }}
+                        />
+                      )}
+                      <small className='text-red-500 font-medium'>
+                        {messages.map((message) =>
+                          message.key === 'description' ? message.message : null
                         )}
                       </small>
                     </div>
